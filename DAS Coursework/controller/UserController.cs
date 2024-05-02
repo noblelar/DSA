@@ -86,6 +86,11 @@ namespace DAS_Coursework.controller
 
             int start = MenuDisplay.GetMenu(LineOptions, new[] { "Find A Route", "Please select your start station:" });
 
+            if (start == 2)
+            {
+                GetUserMenu();
+            }
+
             int end = MenuDisplay.GetMenu(LineOptions, new[] { "Find A Route", $"Please select your ending station: \n\nStart destination: {LineOptions[start]}" });
 
             Console.ForegroundColor = ConsoleColor.Magenta;
