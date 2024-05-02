@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>DAS_Coursework</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="utils\" />
+    <None Remove="services\" />
+    <None Remove="interfaces\" />
+    <None Remove="controller\" />
+    <None Remove="models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="utils\" />
+    <Folder Include="services\" />
+    <Folder Include="interfaces\" />
+    <Folder Include="controller\" />
+    <Folder Include="models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Colorful.Console" Version="1.2.15" />
+  </ItemGroup>
+</Project>
