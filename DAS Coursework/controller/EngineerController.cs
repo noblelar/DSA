@@ -1,8 +1,8 @@
 ﻿using System;
 namespace DAS_Coursework.controller
 {
-	public static class EngineerController
-	{
+    public static class EngineerController
+    {
         public static void GetEngineerMenu()
         {
             string[] EngineerOptions = new[]{
@@ -15,12 +15,17 @@ namespace DAS_Coursework.controller
                     "Go Back"
             };
 
-            int response =utils.MenuDisplay.GetMenu(EngineerOptions, new[] { "This is the engineer menu", "What action do you want to perform:" });
+            int response = utils.MenuDisplay.GetMenu(EngineerOptions, new[] { "This is the engineer menu", "What action do you want to perform:" });
 
-            if(response == 6)
+            if (response == 6)
             {
                 MainController.GetMainMain();
             }
+        }
+
+        public static void AddJourneyDelay()
+        {
+
         }
     }
 }
