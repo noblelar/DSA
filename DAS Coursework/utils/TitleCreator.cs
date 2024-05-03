@@ -7,8 +7,8 @@ namespace DAS_Coursework.utils
 	{
 		public static void GetTitle()
 		{
-            Colorful.Console.WriteAscii("CITY MAPPER", Color.Green);
-        }
-    }
+			Colorful.Console.WriteAscii("CITY MAPPER", Color.Green);
+		}
+	}
 }
 

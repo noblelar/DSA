@@ -16,10 +16,11 @@ namespace DAS_Coursework.models
         private float time_amPeak;
         private float inter_peak;
         private float delay = 0;
+        private Section? nextSection;
 
-       
+
         public Section(string startingStation, string endingStation, float distance,
-                       float time_ui, float time_amPeak, float inter_peak, float delay = 0)
+                       float time_ui, float time_amPeak, float inter_peak, float delay = 0, Section? nextSection= null)
         {
             this.id = Guid.NewGuid();
             this.startingStation = startingStation;
@@ -29,11 +30,12 @@ namespace DAS_Coursework.models
             this.time_amPeak = time_amPeak;
             this.inter_peak = inter_peak;
             this.delay = delay;
+            this.nextSection = nextSection;
         }
 
         public float GetDelay() => delay;
 
-        public float ResetDelay () => delay = 0;
+        public float ResetDelay() => delay = 0;
         public void SetDelay(float value) => delay = value;
 
 
