@@ -1,10 +1,10 @@
 ﻿using System;
 namespace DAS_Coursework.utils
 {
-	public static class MenuDisplay
-	{
-		public static int GetMenu(string[] options, string[] message)
-		{
+    public static class MenuDisplay
+    {
+        public static int GetMenu(string[] options, string[] message)
+        {
             int selectedLineIndex = 0;
             ConsoleKey pressedKey;
             do
@@ -18,7 +18,7 @@ namespace DAS_Coursework.utils
                 else if (pressedKey == ConsoleKey.UpArrow && selectedLineIndex - 1 >= 0)
                     selectedLineIndex--;
 
-                
+
 
             } while (pressedKey != ConsoleKey.Enter);
 
@@ -49,7 +49,6 @@ namespace DAS_Coursework.utils
 
         static void ChangeLineColor(bool shouldHighlight)
         {
-           
             if (shouldHighlight)
             {
                 Console.BackgroundColor = ConsoleColor.White;

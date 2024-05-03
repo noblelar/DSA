@@ -3,10 +3,10 @@ using DAS_Coursework.utils;
 
 namespace DAS_Coursework.controller
 {
-	public static class MainController
-	{
-		public static void GetMainMain()
-		{
+    public static class MainController
+    {
+        public static void GetMainMain()
+        {
             string[] UserTypes = new[]{
                                     "Engineer",
                                     "Customer",
@@ -33,7 +33,7 @@ namespace DAS_Coursework.controller
             Console.ReadKey();
 
         }
-    
-	}
+
+    }
 }
 

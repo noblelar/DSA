@@ -32,6 +32,8 @@ namespace DAS_Coursework.models
         }
 
         public float GetDelay() => delay;
+
+        public float ResetDelay () => delay = 0;
         public void SetDelay(float value) => delay = value;
 
 

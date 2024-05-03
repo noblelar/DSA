@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAS_Coursework.models
+namespace DAS_Coursework.utils
 {
-    internal class Status
+    public enum Status
     {
+        Closed,
+        Opened
     }
 }

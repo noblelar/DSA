@@ -16,11 +16,9 @@
     <None Remove="models\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="utils\" />
     <Folder Include="services\" />
     <Folder Include="interfaces\" />
     <Folder Include="controller\" />
-    <Folder Include="models\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.15" />
