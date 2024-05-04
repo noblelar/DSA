@@ -5,8 +5,11 @@ namespace DAS_Coursework.controller
 {
     public static class MainController
     {
+
         public static void GetMainMain()
         {
+            GetData.GetSectionData();
+
             string[] UserTypes = new[]{
                                     "Engineer",
                                     "Customer",
