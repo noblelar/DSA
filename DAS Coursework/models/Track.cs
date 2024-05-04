@@ -18,15 +18,15 @@ namespace DAS_Coursework.models
 
         public Track(string name, string direction, Status initialStatus = Status.Opened)
         {
-            id = Guid.NewGuid(); 
+            id = Guid.NewGuid();
             this.name = name;
             this.direction = direction;
-            stations = new List<Station>(); 
-            stops = new List<Section>(); 
+            stations = new List<Station>();
+            stops = new List<Section>();
             status = initialStatus;
         }
-       
-        
+
+
         public Status Status
         {
             get { return status; }
@@ -55,7 +55,7 @@ namespace DAS_Coursework.models
         {
             if (section != null)
                 stops.Remove(section);
-        } 
+        }
 
     }
 

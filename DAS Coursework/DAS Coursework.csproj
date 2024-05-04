@@ -14,11 +14,13 @@
     <None Remove="interfaces\" />
     <None Remove="controller\" />
     <None Remove="models\" />
+    <None Remove="data\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="services\" />
     <Folder Include="interfaces\" />
     <Folder Include="controller\" />
+    <Folder Include="data\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.15" />
