@@ -1,53 +1,70 @@
 ﻿using System;
+using DAS_Coursework.models;
+
 namespace DAS_Coursework.utils
 {
+    
+
     public class PriorityQueue
     {
-        private (string, double)[] queue;
+        private (Verticex, double)[] queue;
         private int count;
 
         public PriorityQueue()
         {
-            this.queue = new (string, double)[0];
-            this.count = 0;
+            queue = new (Verticex, double)[10]; // Initial capacity
+            count = 0;
         }
 
-        public void Enqueue(string element, double priority)
+        public void Enqueue(Verticex vertex, double priority)
         {
-            Array.Resize(ref this.queue, this.queue.Length + 1);
-            this.queue[this.count++] = (element, priority);
-            this.Sort();
+            if (count == queue.Length)
+                ResizeQueue(queue.Length * 2); // Double the capacity if full
+
+            queue[count++] = (vertex, priority);
+            Sort();
         }
 
-        public string Dequeue()
+        public Verticex Dequeue()
         {
-            if (this.IsEmpty()) return null;
-            var dequeued = this.queue[0].Item1;
-            Array.Copy(this.queue, 1, this.queue, 0, --this.count);
-            return dequeued;
-        }
-
-        private void Sort()
-        {
-            for (int i = 0; i < this.count - 1; i++)
+            if (IsEmpty()) return null;
+            Verticex vertex = queue[0].Item1;
+            for (int i = 1; i < count; i++)
             {
-                for (int j = 0; j < this.count - i - 1; j++)
-                {
-                    if (this.queue[j].Item2 > this.queue[j + 1].Item2)
-                    {
-                        // Swap elements
-                        var temp = this.queue[j];
-                        this.queue[j] = this.queue[j + 1];
-                        this.queue[j + 1] = temp;
-                    }
-                }
+                queue[i - 1] = queue[i];
             }
+            count--;
 
+            // Resize the queue if it's less than 25% full
+            if (count < queue.Length / 4)
+                ResizeQueue(queue.Length / 2);
+
+            return vertex;
         }
 
         public bool IsEmpty()
         {
-            return this.count == 0;
+            return count == 0;
+        }
+
+        private void Sort()
+        {
+            Array.Sort(queue, 0, count, new PriorityQueueComparer());
+        }
+
+        private void ResizeQueue(int newCapacity)
+        {
+            (Verticex, double)[] newQueue = new (Verticex, double)[newCapacity];
+            Array.Copy(queue, newQueue, count);
+            queue = newQueue;
+        }
+
+        private class PriorityQueueComparer : IComparer<(Verticex, double)>
+        {
+            public int Compare((Verticex, double) x, (Verticex, double) y)
+            {
+                return x.Item2.CompareTo(y.Item2);
+            }
         }
     }
 

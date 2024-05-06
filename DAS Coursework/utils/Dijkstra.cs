@@ -1,69 +1,66 @@
-﻿using System;
+﻿using DAS_Coursework.models;
 
 namespace DAS_Coursework.utils
 {
     public class Dijkstra
     {
-        public static void ShortestPath(TrainSystem graph, string source, string destination)
+        public static void ShortestPath(TrainSystem graph, Verticex source, Verticex destination)
         {
-            string[] vertices = graph.Vertices;
-            double[,] weights = graph.Weights;
-
-            double[] distances = new double[vertices.Length];
-            string[] predecessors = new string[vertices.Length];
             PriorityQueue pq = new PriorityQueue();
+            double[] distances = new double[graph.vertices.Length];
+            Verticex[] predecessors = new Verticex[graph.vertices.Length];
 
-            // Initialize distances and predecessors
-            for (int i = 0; i < vertices.Length; i++)
+            // Initialize distances
+            for (int i = 0; i < graph.vertices.Length; i++)
             {
-                distances[i] = vertices[i] == source ? 0 : double.PositiveInfinity;
-                predecessors[i] = null;
-                pq.Enqueue(vertices[i], distances[i]);
+                distances[i] = (graph.vertices[i] == source) ? 0 : double.PositiveInfinity;
+                pq.Enqueue(graph.vertices[i], distances[i]);
             }
 
             // Dijkstra's algorithm
             while (!pq.IsEmpty())
             {
-                var u = pq.Dequeue();
+                Verticex u = pq.Dequeue();
+                if (u == destination) break;
 
-                if (u == destination) break; // Stop when destination is reached
-
-                int uIndex = Array.IndexOf(vertices, u);
-                for (int i = 0; i < vertices.Length; i++)
+                foreach (Edge edge in graph.edges)
                 {
-                    if (weights[uIndex, i] > 0)
+                    if (edge.fromVerticex == u)
                     {
-                        var alt = distances[uIndex] + weights[uIndex, i];
-                        if (alt < distances[i])
+                        double alt = distances[Array.IndexOf(graph.vertices, u)] + edge.weight;
+                        if (alt < distances[Array.IndexOf(graph.vertices, edge.toVerticex)])
                         {
-                            distances[i] = alt;
-                            predecessors[i] = u;
-                            pq.Enqueue(vertices[i], alt);
+                            distances[Array.IndexOf(graph.vertices, edge.toVerticex)] = alt;
+                            predecessors[Array.IndexOf(graph.vertices, edge.toVerticex)] = u;
+                            pq.Enqueue(edge.toVerticex, alt);
                         }
                     }
                 }
             }
 
             // Reconstruct shortest path
-            string[] shortestPath = new string[0];
-            string currentVertex = destination;
+            Console.Write("Shortest path from " + source.Name + " to " + destination.Name + ": ");
+            Verticex[] path = new Verticex[graph.vertices.Length];
+            int pathLength = 0;
+            Verticex currentVertex = destination;
             while (currentVertex != source)
             {
-                Array.Resize(ref shortestPath, shortestPath.Length + 1);
-                shortestPath[shortestPath.Length - 1] = currentVertex;
-                int currentIndex = Array.IndexOf(vertices, currentVertex);
-                currentVertex = predecessors[currentIndex];
+                path[pathLength++] = currentVertex;
+                currentVertex = predecessors[Array.IndexOf(graph.vertices, currentVertex)];
                 if (currentVertex == null)
                 {
-                    Console.WriteLine($"There is no path from {source} to {destination}");
+                    Console.WriteLine("There is no path from " + source.Name + " to " + destination.Name);
                     return;
                 }
             }
-            Array.Resize(ref shortestPath, shortestPath.Length + 1);
-            shortestPath[shortestPath.Length - 1] = source;
+            path[pathLength++] = source;
 
-            Array.Reverse(shortestPath);
-            Console.WriteLine($"Shortest path from {source} to {destination}: {string.Join(" -> ", shortestPath)}, Distance: {distances[Array.IndexOf(vertices, destination)]}");
+            // Print the path
+            for (int i = pathLength - 1; i > 0; i--)
+            {
+                Console.Write(path[i].Name + " -> ");
+            }
+            Console.WriteLine(path[0].Name + ", Time(mins): " + distances[Array.IndexOf(graph.vertices, destination)]);
         }
     }
 
