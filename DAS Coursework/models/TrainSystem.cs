@@ -55,7 +55,7 @@ namespace DAS_Coursework.models
             Console.WriteLine("Edges:");
             foreach (var edge in edges)
             {
-                Console.WriteLine($"{edge.fromVerticex.Name} -> {edge.toVerticex.Name}, Weight: {edge.weight}");
+                Console.WriteLine($"{edge.fromVerticex.Name} -> {edge.toVerticex.Name}, Weight: {edge.weight}"); 
             }
         }
 

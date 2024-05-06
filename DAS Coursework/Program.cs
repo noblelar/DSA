@@ -9,9 +9,9 @@ class Program
 {
     static void Main(string[] args)
     {
+        MainController.GetMainMain();
         var graph = new TrainSystem();
 
-        ////MainController.GetMainMain();
         var stationA = data.GetData.GetStationA();
         var stationB = data.GetData.GetStationB();
         var travelTimes = data.GetData.GetEdgeTime();
@@ -26,6 +26,8 @@ class Program
         {
             graph.AddEdge(lines[i], stationA[i], stationB[i], travelTimes[i]);
         }
+
+        //graph.GetEdges();
 
         string source = "WEMBLEY PARK";
         string destination = "PADDINGTON (H&C)";
