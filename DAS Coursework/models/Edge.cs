@@ -7,7 +7,14 @@ namespace DAS_Coursework.models
         public string line;
         public Verticex fromVerticex;
         public Verticex toVerticex;
-        public double weight;
+        private double weightField;
+        public double delay = 0;
+
+
+        public double weight {
+            get { return weightField + delay; }
+            private set {}
+        }
 
         public Edge(string line, Verticex fromVerticex, Verticex toVerticex, double weight)
 		{
@@ -15,7 +22,17 @@ namespace DAS_Coursework.models
             this.line = line;
             this.fromVerticex = fromVerticex;
             this.toVerticex = toVerticex;
-            this.weight = weight;
+            this.weightField = weight;
+        }
+
+        public void AddDelay(double delayTime)
+        {
+            delay += delayTime;
+        }
+
+        public void RemoveDelay()
+        {
+            delay = 0;
         }
 	}
 }

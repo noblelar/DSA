@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DAS_Coursework.utils;
 
 namespace DAS_Coursework.controller
@@ -26,37 +27,80 @@ namespace DAS_Coursework.controller
             {
                 AddJourneyDelay();
             }
+            else if (response == 1)
+            {
+                RemoveJourneyDelay();
+            }
         }
 
         public static void AddJourneyDelay()
         {
-            //TODO: fetch these stations from the models
-            string[] LineOptions = new[]{
-                    "Wembley Station",
-                    "Baker Street",
-                    "Go Back"
-            };
+            string? endingStation = null;
+            string[] LineOptions = data.GetData.GetUniqueLines().Append("Back").ToArray();
 
-            int start = MenuDisplay.GetMenu(LineOptions, new[] { "Find A Route", "Please select your start station:" });
+            int start = MenuDisplay.GetMenu(LineOptions, new[] { "Add A Journey Delay", "Please select the line:" });
 
-            if (start == 2)
+            if (start == LineOptions.Length-1)
             {
                 GetEngineerMenu();
+                return;
             }
 
-            int end = MenuDisplay.GetMenu(LineOptions, new[] { "Find A Route", $"Please select your ending station: \n\nStart destination: {LineOptions[start]}" });
+            string[] StationOptions = MainController.graph.VerticesConnectedToLine(LineOptions[start]).Append("Cancel").ToArray();
+
+            int end = MenuDisplay.GetMenu(StationOptions, new[] { "Add A Journey Delay", $"Please select your starting station of the journey delay: \n\nSelected Line: ({LineOptions[start]})" });
+
+            if (end == StationOptions.Length - 1)
+            {
+                GetEngineerMenu();
+                return;
+            }
+
+            Console.WriteLine("Do you want to apply the delay in Both Direction (True / False)");
+            var newResponse = utils.Parser.AcceptBooleanInformation();
+
+            if (newResponse)
+            {
+                string[] endingOptions = StationOptions.Where(s => !s.Contains(StationOptions[end])).ToArray();
+                int endIdx = MenuDisplay.GetMenu(endingOptions, new[] { "Add A Journey Delay", $"Please select your ending station of the journey delay: \n\nSelected Line: ({LineOptions[start]})" });
+
+                if (end == StationOptions.Length - 1)
+                {
+                    GetEngineerMenu();
+                    return;
+                }
+                endingStation = endingOptions[endIdx];
+            }
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine($"\n\nEnter the delay you want to add distance from {LineOptions[start]} to {LineOptions[end]} (in minute)");
+            Console.Write($"\n\nEnter the delay you want to apply travel time on {LineOptions[start]} starting from {StationOptions[end]} {(endingStation == null ? "(in minute)" : "")}");
+            if(endingStation != null)
+            {
+                Console.Write($" AND {LineOptions[start]} from {endingStation}");
+            }
+
+            Console.WriteLine();
             Console.ResetColor();
 
-            int delay = Parser.AcceptIntegerInformation();
+            double delay = Parser.AcceptDoubleInformation();
+
+            //apply delay to the edge with the starting point and line
+            MainController.graph.AddDelayToEdge(StationOptions[end], LineOptions[start], delay);
+            if(endingStation != null)
+            {
+                MainController.graph.AddDelayToEdge(endingStation, LineOptions[start], delay);
+            }
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n\nYou have applied a delay of {delay}min to journey from {LineOptions[start]} to {LineOptions[end]}");
+            Console.Write($"\n\nYou have applied a delay of {delay}min to journey to {LineOptions[start]} starting from {StationOptions[end]}");
+            if (endingStation != null)
+            {
+                Console.Write($" AND {LineOptions[start]} starting from {endingStation}");
+            }
+            Console.WriteLine();
+
             Console.ResetColor();
-
-
+            Dijkstra.ShortestPath(MainController.graph, MainController.graph.FindVertexByName("WEMBLEY PARK"), MainController.graph.FindVertexByName("LONDON BRIDGE"));
             Console.WriteLine("\nPress enter to go back");
             ConsoleKey pressedKey = Console.ReadKey().Key;
 
@@ -68,49 +112,50 @@ namespace DAS_Coursework.controller
 
         public static void RemoveJourneyDelay()
         {
-            //TODO: fetch these stations from the models
-            string[] LineOptions = new[]{
-                    "Wembley Station",
-                    "Baker Street",
-                    "Go Back"
-            };
 
+            string[] LineOptions = data.GetData.GetUniqueLines().Append("Back").ToArray();
+            int start = MenuDisplay.GetMenu(LineOptions, new[] { "Remove Journey Delay", "Please select the line:" });
 
-            int start = MenuDisplay.GetMenu(LineOptions, new[] { "Find A Route", "Please select your start station:" });
-
-            if(start == 2)
+            if (start == LineOptions.Length - 1)
             {
                 GetEngineerMenu();
+                return;
             }
 
-            int end = MenuDisplay.GetMenu(LineOptions, new[] { "Find A Route", $"Please select your ending station: \n\nStart destination: {LineOptions[start]}" });
+            string[] StationOptions = MainController.graph.VerticesConnectedToLine(LineOptions[start]).Append("Cancel").ToArray();
+            int end = MenuDisplay.GetMenu(StationOptions, new[] { "Add A Journey Delay", $"Please select your starting station of the journey delay: \n\nSelected Line: ({LineOptions[start]})" });
 
-            //TODO: fetch the journey section
+            if (end == StationOptions.Length - 1)
+            {
+                GetEngineerMenu();
+                return;
+            }            
 
-            var delay = 0;
+            var edge = MainController.graph.GetEdgeWithStartVertexAndLine(StationOptions[end], LineOptions[start]);
+
+            var delay = edge.delay;
 
             if(delay > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine($"\n\nThere is a delay of {delay}min between {LineOptions[start]} and {LineOptions[end]}");
+                Console.WriteLine($"\n\nThere is a delay of {delay}min on {LineOptions[start]} starting from {StationOptions[end]}");
                 Console.WriteLine("Do you want to remove it (TRUE / FALSE)");
                 Console.ResetColor();
 
                 bool response = Parser.AcceptBooleanInformation();
                 if (response)
                 {
-                    //TODO: pass station as argument
-                    RemoveDelay();
+                    edge.RemoveDelay();
                 }
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\n\nThere is no delay between {LineOptions[start]} and {LineOptions[end]}");
+                Console.WriteLine($"\n\nThere is no delay on {LineOptions[start]} starting from {StationOptions[end]}");
                 Console.ResetColor();
             }
 
-
+            Dijkstra.ShortestPath(MainController.graph, MainController.graph.FindVertexByName("WEMBLEY PARK"), MainController.graph.FindVertexByName("LONDON BRIDGE"));
             Console.WriteLine("\nPress enter to go back");
             ConsoleKey pressedKey = Console.ReadKey().Key;
 
@@ -118,13 +163,6 @@ namespace DAS_Coursework.controller
             {
                 GetEngineerMenu();
             }
-        }
-
-        private static void RemoveDelay()
-        {
-            //TODO: station will be passed as a arg
-
-            // TODO: set station delay to 0
         }
     }
 }

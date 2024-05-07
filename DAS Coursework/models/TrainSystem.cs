@@ -70,5 +70,84 @@ namespace DAS_Coursework.models
             }
             return null;
         }
+
+        public  string[] VerticesConnectedToLine(string lineName)
+        {
+            // Temporary array to store connected vertices' names
+            string[] connectedVertices = new string[vertices.Length];
+            int count = 0; // Counter for the number of connected vertices
+
+            // Iterate through all edges
+            foreach (Edge edge in edges)
+            {
+                // Check if the edge belongs to the specified line
+                if (edge.line == lineName)
+                {
+                    // Add the 'from' vertex if not already added
+                    if (!IsVertexNameInArray(connectedVertices, count, edge.fromVerticex.Name))
+                    {
+                        connectedVertices[count++] = edge.fromVerticex.Name;
+                    }
+
+                    // Add the 'to' vertex if not already added
+                    if (!IsVertexNameInArray(connectedVertices, count, edge.toVerticex.Name))
+                    {
+                        connectedVertices[count++] = edge.toVerticex.Name;
+                    }
+                }
+            }
+
+            // Trim the array to remove any unused elements
+            Array.Resize(ref connectedVertices, count);
+
+            return connectedVertices;
+
+        }
+
+        // Helper function to check if a vertex is already present in the array
+        private static bool IsVertexNameInArray(string[] vertices, int count, string vertexName)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (vertices[i] == vertexName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Edge GetEdgeWithStartVertexAndLine(string startVertexName, string lineName)
+        {
+            // Iterate through all edges
+            foreach (Edge edge in edges)
+            {
+                // Check if the edge belongs to the specified line and has the start vertex
+                if (edge.line == lineName && edge.fromVerticex.Name == startVertexName)
+                {
+                    // Return the edge if found
+                    return edge;
+                }
+            }
+
+            // Return null if no such edge is found
+            return null;
+        }
+
+        public bool AddDelayToEdge(string startVertexName, string lineName, double delay)
+        {
+            var delayingEdge = GetEdgeWithStartVertexAndLine(startVertexName, lineName);
+            if (delayingEdge == null)
+            {
+                return false;
+            }
+            else
+            {
+                delayingEdge.AddDelay(delay);
+
+            }
+
+            return false;
+        }
     }
 }

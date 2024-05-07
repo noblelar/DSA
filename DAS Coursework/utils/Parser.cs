@@ -25,6 +25,28 @@ namespace DAS_Coursework.utils
             return answer;
         }
 
+        public static double AcceptDoubleInformation()
+        {
+            bool isValid = false;
+            double answer = 0;
+
+            while (isValid != true)
+            {
+                string response = Console.ReadLine();
+                isValid = double.TryParse(response, out answer);
+
+                if (isValid != true)
+                {
+                    Console.WriteLine("Please provide a valid answer (decimal)");
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return answer;
+        }
+
         public static bool AcceptBooleanInformation()
         {
             bool isValid = false;

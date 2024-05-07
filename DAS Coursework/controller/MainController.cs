@@ -1,4 +1,5 @@
 ﻿using System;
+using DAS_Coursework.models;
 using DAS_Coursework.utils;
 
 namespace DAS_Coursework.controller
@@ -6,10 +7,10 @@ namespace DAS_Coursework.controller
     public static class MainController
     {
 
+        public static TrainSystem graph;
+
         public static void GetMainMain()
         {
-            GetData.GetSectionData();
-
             string[] UserTypes = new[]{
                                     "Engineer",
                                     "Customer",
@@ -37,6 +38,23 @@ namespace DAS_Coursework.controller
 
         }
 
+        public static void Init()
+        {
+            graph = new TrainSystem();
+
+            var travels = data.GetData.GetAllTrainData();
+
+            foreach (var travel in travels)
+            {
+                graph.AddVertex(travel.StationA);
+            }
+
+            foreach (var travel in travels)
+            {
+                graph.AddEdge(travel.Line, travel.StationA, travel.StationB, travel.AmPeakTime);
+            }
+
+        }
     }
 }
 
