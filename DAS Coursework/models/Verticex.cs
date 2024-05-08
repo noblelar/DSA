@@ -1,6 +1,7 @@
 ﻿using System;
 namespace DAS_Coursework.models
 {
+    // Representing Stations on the rail line
 	public class Verticex
 	{
         private Guid id;
