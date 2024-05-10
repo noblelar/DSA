@@ -28,7 +28,6 @@ namespace DAS_Coursework.data
                     if (firstRow)
                     {
                         firstRow = false;
-                        Console.WriteLine($"Skipped: {reader.GetString(columnIndex)}");
                         continue; // Continue to the next iteration of the loop
 
                     }
@@ -36,7 +35,6 @@ namespace DAS_Coursework.data
                     if (secondRow)
                     {
                         secondRow = false;
-                        Console.WriteLine($"Skipped: {reader.GetString(columnIndex)}");
                         continue; // Continue to the next iteration of the loop
 
                     }
@@ -52,14 +50,15 @@ namespace DAS_Coursework.data
             return data;
         }
 
-        public static string[] GetStationA() {
+        public static string[] GetStationA()
+        {
             var result = GetColumnData(2);
 
 
             return result;
-        
+
         }
-        
+
 
         public static string[] GetStationB() => GetColumnData(3);
 
@@ -72,12 +71,13 @@ namespace DAS_Coursework.data
             string[] lines = new string[0];
             int count = 0;
 
-            foreach ( var line in allLines){
+            foreach (var line in allLines)
+            {
                 if (!lines.Contains(line))
                 {
-                     Array.Resize(ref lines, count + 1);
-                      lines[count++] = line;
-                    
+                    Array.Resize(ref lines, count + 1);
+                    lines[count++] = line;
+
                 }
             }
 
@@ -94,7 +94,7 @@ namespace DAS_Coursework.data
                 int count = 0;
                 while (reader.Read()) // Each row of the file
                 {
-                   
+
                     if (firstRow)
                     {
                         firstRow = false;
@@ -104,12 +104,12 @@ namespace DAS_Coursework.data
                     if (secondRow)
                     {
                         secondRow = false;
-       
+
                         continue; // Continue to the next iteration of the loop
 
                     }
 
-       
+
                     Array.Resize(ref data, count + 1);
                     if (!reader.IsDBNull(5) && reader.GetDouble(5) != null)
                     {
@@ -156,8 +156,8 @@ namespace DAS_Coursework.data
                     string stationA = GetExcelStringData(reader, 2);
                     string stationB = GetExcelStringData(reader, 3);
                     double amPeakTime = GetExcelDoubleData(reader, 6);
-                    double interPeakTime= GetExcelDoubleData(reader, 7);
-                    double? umimpededTime =GetExcelDoubleData(reader, 5);
+                    double interPeakTime = GetExcelDoubleData(reader, 7);
+                    double? umimpededTime = GetExcelDoubleData(reader, 5);
 
                     var newEntry = new TrainData(line, direction, stationA, stationB, amPeakTime, interPeakTime, umimpededTime);
 

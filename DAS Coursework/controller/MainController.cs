@@ -51,7 +51,7 @@ namespace DAS_Coursework.controller
 
             foreach (var travel in travels)
             {
-                graph.AddEdge(travel.Line, travel.StationA, travel.StationB, travel.AmPeakTime);
+                graph.AddEdge(travel.Line, travel.StationA, travel.StationB, travel.AmPeakTime, travel.Direction);
             }
 
         }
