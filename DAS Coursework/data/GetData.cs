@@ -6,7 +6,8 @@ namespace DAS_Coursework.data
 {
     public static class GetData
     {
-        private static string FilePath = @"/Users/otcheredev/Projects/DAS Coursework/DAS Coursework/data/isst.xlsx";
+        // private static string FilePath = @"/Users/otcheredev/Projects/DAS Coursework/DAS Coursework/data/isst.xlsx";
+        private static string FilePath = @"C:\Users\larte\source\repos\Data-structure-Coursework\DAS Coursework\data\isst.xlsx";
 
         private static IExcelDataReader GetExcelReader()
         {
